@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проста гра вибір</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .game-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .options {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+        }
+        .option {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .option:hover {
+            transform: scale(1.1);
+            border-color: #4CAF50;
+        }
+        .option img {
+            max-width: 60px;
+            max-height: 60px;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            min-height: 24px;
+        }
+        #sendData {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 20px 0;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Оберіть предмет</h1>
+        <p>Клацніть на один з предметів нижче:</p>
+        
+        <div class="options">
+            <div class="option" data-choice="1">
+                <img src="https://cdn-icons-png.flaticon.com/512/3522/3522697.png" alt="Камінь">
+            </div>
+            <div class="option" data-choice="2">
+                <img src="https://cdn-icons-png.flaticon.com/512/5977/5977585.png" alt="Ножиці">
+            </div>
+            <div class="option" data-choice="3">
+                <img src="https://cdn-icons-png.flaticon.com/512/484/484167.png" alt="Папір">
+            </div>
+        </div>
+        
+        <div id="result"></div>
+        
+        <button id="sendData" disabled>Надіслати вибір</button>
+    </div>
+
+    <script>
+        let userChoice = null;
+        
+        // Обробник кліків на опції
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                userChoice = this.getAttribute('data-choice');
+                document.querySelectorAll('.option').forEach(opt => {
+                    opt.style.borderColor = '#ddd';
+                });
+                this.style.borderColor = '#4CAF50';
+                
+                const choices = {
+                    '1': 'Камінь',
+                    '2': 'Ножиці',
+                    '3': 'Папір'
+                };
+                
+                document.getElementById('result').textContent = "Ви обрали: ${choices[userChoice]}";
+                document.getElementById('sendData').disabled = false;
+            });
+        });
+        
+        // Надсилання даних боту
+        document.getElementById('sendData').addEventListener('click', function() {
+            if (userChoice) {
+                // Відправляємо дані в Telegram
+                if (Telegram.WebApp) {
+                    Telegram.WebApp.sendData(userChoice);
+                } else {
+                    // Для тестування без Telegram
+                    alert("Дані для відправки: ${userChoice}");
+                    console.log("Вибір користувача:", userChoice);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
