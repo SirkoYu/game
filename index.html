@@ -111,20 +111,36 @@
                 document.getElementById('sendData').disabled = false;
             });
         });
-        
+    
+
+        function isTelegramWebApp() {
+    return (
+        typeof window.Telegram !== 'undefined' &&
+        typeof Telegram.WebApp !== 'undefined' &&
+        Telegram.WebApp.initData !== '' // initData не пустий (містить інфо про користувача)
+    );
+}
+
         // Надсилання даних боту
         document.getElementById('sendData').addEventListener('click', function() {
-            if (userChoice) {
-                // Відправляємо дані в Telegram
-                if (Telegram.WebApp) {
-                    Telegram.WebApp.sendData(userChoice);
-                } else {
-                    // Для тестування без Telegram
-                    alert(`Дані для відправки: ${userChoice}`);
-                    console.log("Вибір користувача:", userChoice);
-                }
-            }
-        });
+    if (!userChoice) {
+        alert("Спочатку оберіть предмет!");
+        return;
+    }
+
+    if (isTelegramWebApp()) {
+        // Режим Telegram WebApp – відправляємо дані в бота
+        Telegram.WebApp.sendData(userChoice);
+        console.log("Дані відправлено в Telegram:", userChoice);
+    } else {
+        // Режим тестування (у звичайному браузері)
+        alert(`Тестовий режим: вибір = ${userChoice}`);
+        console.log("Тестовий вибір:", userChoice);
+        
+        // Можна додати fetch() для тестування API
+        // fetch('ваш_сервер', { method: 'POST', body: userChoice });
+    }
+});
     </script>
 </body>
 </html>
