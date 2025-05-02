@@ -107,7 +107,7 @@
                     '3': 'Папір'
                 };
                 
-                document.getElementById('result').textContent = "Ви обрали: ${choices[userChoice]}";
+                document.getElementById('result').textContent = `Ви обрали: ${choices[userChoice]}`;
                 document.getElementById('sendData').disabled = false;
             });
         });
@@ -120,7 +120,7 @@
                     Telegram.WebApp.sendData(userChoice);
                 } else {
                     // Для тестування без Telegram
-                    alert("Дані для відправки: ${userChoice}");
+                    alert(`Дані для відправки: ${userChoice}`);
                     console.log("Вибір користувача:", userChoice);
                 }
             }
