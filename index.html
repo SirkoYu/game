@@ -1336,7 +1336,11 @@ async function showRating() {
         const urlParams = new URLSearchParams(window.location.search);
         const username = urlParams.get('username');
         
-        if (!username) return;
+        if (!username) {
+            alert('Відсутнє ім\'я користувача');
+            document.body.innerHTML = '';
+            throw new Error('Відсутнє ім\'я користувача');
+        }
         
         const dangerousChars = /[<>"']/g;
         
